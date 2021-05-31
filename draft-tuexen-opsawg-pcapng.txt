@@ -5,7 +5,7 @@
 Network Working Group                                     M. Tuexen, Ed.
 Internet-Draft                          Muenster Univ. of Appl. Sciences
 Intended status: Informational                                  F. Risso
-Expires: 30 June 2021                              Politecnico di Torino
+Expires: 2 December 2021                           Politecnico di Torino
                                                              J. Bongertz
                                                  Airbus DS CyberSecurity
                                                                 G. Combs
@@ -16,7 +16,7 @@ Expires: 30 June 2021                              Politecnico di Torino
                                                                  Red Hat
                                                            M. Richardson
                                                                Sandelman
-                                                        27 December 2020
+                                                             31 May 2021
 
 
            PCAP Next Generation (pcapng) Capture File Format
@@ -54,11 +54,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 30 June 2021.
+   This Internet-Draft will expire on 2 December 2021.
 
 Copyright Notice
 
-   Copyright (c) 2020 IETF Trust and the persons identified as the
+   Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -294,9 +294,9 @@ Table of Contents
 
    *  Event/Security Blocks
 
-   Requests for new standardized Block Type codes should be sent to the
-   pcap-ng-format mailing list
-   (https://www.winpcap.org/mailman/listinfo/pcap-ng-format).
+   Requests for new standardized Block Type codes should be made by
+   creating a pull request to update this document as described in
+   Section 11.1.
 
 3.3.  Logical Block Hierarchy
 
@@ -432,8 +432,8 @@ Table of Contents
       Length field.
 
    Requests for new standardized option codes for a given block should
-   be sent to the pcap-ng-format mailing list
-   (https://www.winpcap.org/mailman/listinfo/pcap-ng-format).
+   be made by creating a pull request to update this document as
+   described in Section 11.1.
 
    A given option may have a fixed length, in which case all instances
    of that option have a length that is equal to the specified fixed
@@ -530,10 +530,10 @@ Table of Contents
    to the block they're in.  A Custom Option can be in any block type
    that can have options, can be repeated any number of times in a
    block, and may come before or after other option types - except the
-   opt_endofopt which is always the last option.  Different Custom
-   Options, of different type codes and/or different Private Enterprise
-   Numbers, may be used in the same pcapng file.  See Section 6 for
-   additional details.
+   opt_endofopt option, which is always the last option.  Different
+   Custom Options, of different type codes and/or different Private
+   Enterprise Numbers, may be used in the same pcapng file.  See
+   Section 6 for additional details.
 
                           1                   2                   3
       0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
@@ -684,7 +684,7 @@ Table of Contents
       2.  This value is palindromic, so that the reader is able to
           recognize the Section Header Block regardless of the
           endianness of the section.  The endianness is recognized by
-          reading the Byte Order Magic, that is located 8 octets after
+          reading the Byte Order Magic, which is located 8 octets after
           the Block Type.
 
    *  Block Total Length: total size of this block, as described in
@@ -698,22 +698,11 @@ Table of Contents
 
    *  Major Version (16 bits): an unsigned value, giving the number of
       the current major version of the format.  The value for the
-      current version of the format is 1.  This value should change if
-      the format changes in such a way that code that reads the new
-      format could not read the old format (i.e., code to read both
-      formats would have to check the version number and use different
-      code paths for the two formats) and code that reads the old format
-      could not read the new format.  Note that adding a new block type
-      or a new option is NOT such a change.
+      current version of the format is 1.
 
    *  Minor Version (16 bits): an unsigned value, giving the number of
-      the current minor version of the format.  The value is for the
-      current version of the format is 0.  This value should change if
-      the format changes in such a way that code that reads the new
-      format could read the old format without checking the version
-      number but code that reads the old format could not read all files
-      in the new format.  Note that adding a new block type or a new
-      option is NOT such a change.
+      the current minor version of the format.  The value for the
+      current version of the format is 0.
 
    *  Section Length (64 bits): a signed value specifying the length in
       octets of the following section, excluding the Section Header
@@ -732,11 +721,70 @@ Table of Contents
    *  Options: optionally, a list of options (formatted according to the
       rules defined in Section 3.5) can be present.
 
-   Adding new block types or options would not necessarily require that
-   either Major or Minor numbers be changed, as code that does not know
-   about the block type or option should just skip it; only if skipping
-   a block or option does not work should the minor version number be
-   changed.
+   Writers of pcapng files MUST NOT write SHBs with a Major Version
+   other than 1 or a Minor Version other than 0.  If they do so, they
+   will write a file that many readers of pcapng files, such as programs
+   using libpcap to read pcapng files (including, but not limited to,
+   tcpdump), Wireshark, and possibly other programs not to be able to
+   read their files.
+
+   Some pcapng file writers have used a minor version of 2, but the file
+   format did not change incompatibly (new block types were added);
+   Readers of pcapng files MUST treat a Minor Version of 2 as equivalent
+   to a Minor Version of 0 (and, if they also write a pcapng file based
+   on the results of reading one or more pcapng files, they MUST NOT, as
+   per the previous sentence, write an SHB with a Minor Version of 2,
+   even if they read an SHB with a Minor Version of 2).  As indicated
+   above, using a minor version number other than 0 when writing a
+   section of a pcapng file will produce a section that most existing
+   software will not be able to read; future versions of some of that
+   software will be able to read sections with a version of 1.2, but
+   older copies of that software that are not updated to the latest
+   version will still not be able to read them.
+
+   The Major Version would be changed only if a new version of this
+   specification, for a later major version of the file format, were
+   created.  Such a version would only be created if the format were to
+   change in such a way that code that reads the new format could not
+   read the old format (i.e., code to read both formats would have to
+   check the version number and use different code paths for the two
+   formats) and code that reads the old format could not read the new
+   format.  An incompatible change to the format of an existing block or
+   an existing option would be such a change; the addition of a new
+   block or a new option would not be such a change.  An example of such
+   an incomparible change would be the addition of an additional field
+   to the Section Header Block, following the Minor Version field and
+   before the Snaplen field; software expecting the new SHB format would
+   not correctly read the old SHB format, and software expecting the old
+   SHB format would not correctly read the new SHB format.  (Note that a
+   change to the SHB must leave the Block Type, Block Total Length,
+   Byte-Order Magic, Major Version, and Minor Version fields at the same
+   offsets from the beginning of the SHB and with the same lengths, must
+   keep the value of the Block TYpe the same, must keep the two
+   posssible values of the Byte-Order Magic the same, depending on the
+   block's byte order, so that the rest of the SHB can be correctly
+   interpreted.)
+
+   The Minor Verson would be chagned only if a new version of this
+   spacification, for a later minor version of the file format, were
+   created.  Such a version would only be created if the format were to
+   change in such a way that code that reads the new format could read
+   the old format without checking the version number but code that
+   reads the old format could not read all files in the new format.  A
+   backward-compatible change to the format of an existing block or an
+   existing opption would be such a change; the addition of a new block
+   or a new option would not be such a change.  An example of such a
+   backward-compatible but not forward-compatible change would be a
+   change to the Interface Description block (see below) to use the
+   current Reserved field to indicate the presence of additional fields
+   before the Options, with a zero value indicate no such fields are
+   present.
+
+   I.e., adding new block types or options would not require that either
+   the Major Version or the Minor Version be changed, as code that does
+   not know about the block type or option should just skip it; only if
+   skipping a block or option does not work should the minor version
+   number be changed.
 
    Aside from the options defined in Section 3.5, the following options
    are valid within this block:
@@ -1803,9 +1851,8 @@ Table of Contents
 
    *  Secrets Type (32 bits): an unsigned integer identifier that
       describes the format of the following Secrets field.  Requests for
-      new Secrets Type codes should be sent to the pcap-ng-format
-      mailing list (https://www.winpcap.org/mailman/listinfo/pcap-ng-
-      format).
+      new Secrets Type codes should be made by creating a pull request
+      to update this document as described in Section 11.1.
 
    *  Secrets Length (32 bits): an unsigned integer that indicates the
       size of the following Secrets field, without any padding octets.
@@ -1834,7 +1881,7 @@ Table of Contents
            LOCAL_EPHEMERAL_PRIVATE_KEY, or PRESHARED|_KEY.  This matches
            the output of extract-handshakes.sh
            (https://git.zx2c4.com/WireGuard/tree/contrib/examples/
-           extract-handshakes/README) which is part of the WireGuard
+           extract-handshakes/README), which is part of the WireGuard
            (https://www.wireguard.com/) project.  A PRESHARED_KEY line
            is linked to a session matched by a previous
            LOCAL_EPHEMERAL_PRIVATE_KEY line.  Every line MUST be
@@ -2316,9 +2363,13 @@ Table of Contents
    the application.
 
    All the remaining Block Type codes (0x00000000 to 0x7FFFFFFF) are
-   standardized by this document.  Requests for new Block Type codes
-   should be sent to the pcap-ng-format mailing list
-   (https://www.winpcap.org/mailman/listinfo/pcap-ng-format).
+   standardized by this document.  Requests for new Block Type codes,
+   Option Type codes, and Secrets Type codes should be made by creating
+   a pull request to update this document at github.com/pcapng/pcapng
+   (https://github.com/pcapng/pcapng).  The pull request should add a
+   description of the new block, option, or secret type to Section 4.
+   The pull request description should contain a clear request for a new
+   type code assignment.
 
    The following is a list of the Standardized Block Type Codes:
 
@@ -2469,11 +2520,11 @@ Table of Contents
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
+              <https://datatracker.ietf.org/doc/html/rfc2119>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+              May 2017, <https://datatracker.ietf.org/doc/html/rfc8174>.
 
 14.2.  Informative References
 
