@@ -5,19 +5,17 @@
 Network Working Group                                     G. Harris, Ed.
 Internet-Draft                                                          
 Intended status: Informational                             M. Richardson
-Expires: 29 May 2025                                           Sandelman
-                                                        25 November 2024
+Expires: 31 May 2025                                           Sandelman
+                                                        27 November 2024
 
 
-       Link-Layer Types for PCAP and PCAPNG Capture File Formats
+         Link-Layer Types for PCAP-related Capture File Formats
                  draft-ietf-opsawg-pcaplinktype-latest
 
 Abstract
 
-   This document creates an IANA registry for the PCAP and PCAPNG
-   LINKTYPE values.  The PCAP and PCAPNG formats are used to save
-   network captures from programs such as tcpdump and wireshark, when
-   using libraries such as libpcap.
+   This document creates an IANA registry for the PCAP-related LINKTYPE
+   values.
 
 About This Document
 
@@ -49,7 +47,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 29 May 2025.
+   This Internet-Draft will expire on 31 May 2025.
 
 Copyright Notice
 
@@ -68,18 +66,17 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
-   2.  Terminology
-   3.  IANA Considerations
-     3.1.  PCAP Registry
-     3.2.  LinkType Registry
-       3.2.1.  Initial Values
-       3.2.2.  Guidance for Designated Experts
-   4.  Security Considerations
-   5.  Contributors
-   6.  Acknowledgments
-   7.  References
-     7.1.  Normative References
-     7.2.  Informative References
+   2.  IANA Considerations
+     2.1.  PCAP Registry
+     2.2.  LinkType Registry
+       2.2.1.  Initial Values
+       2.2.2.  Guidance for Designated Experts
+   3.  Security Considerations
+   4.  Contributors
+   5.  Acknowledgments
+   6.  References
+     6.1.  Normative References
+     6.2.  Informative References
    Authors' Addresses
 
 1.  Introduction
@@ -92,36 +89,29 @@ Table of Contents
    later put into a library named libpcap [LIBPCAP].
 
    Other documents describe the original (legacy) format used by tcpdump
-   (pcap), as well as the revised format (pcapng) which is used by
-   tcpdump and Wireshark [Wireshark].
+   (PCAP, [I-D.ietf-opsawg-pcap]), as well as the revised format
+   [I-D.ietf-opsawg-pcapng] which is used by tcpdump and Wireshark
+   [Wireshark].
 
    Within those formats each packet that is captured is described by a
    LINKTYPE value.  The LINKTYPE value selects one of many hundred
    formats for metadata and Layer 2 encapsulation of the packet.
 
    This document creates an IANA registry for the LINKTYPE format,
-   establishing the IANA Considerations by which other uses of the pcap
-   and pcapng formats may register new LINKTYPE values.
+   establishing the IANA Considerations by which other uses of the PCAP-
+   related formats may register new LINKTYPE values.
 
-2.  Terminology
+2.  IANA Considerations
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
-
-3.  IANA Considerations
-
-3.1.  PCAP Registry
+2.1.  PCAP Registry
 
    IANA is requested to create a new registry group entitled "The PCAP
    Registry".
 
-3.2.  LinkType Registry
+2.2.  LinkType Registry
 
-   IANA is also requested to create a registry entitled "PCAP LinkType
-   List" under The PCAP registry group (Section 3.1).
+   IANA is also requested to create a registry entitled "PCAP-related
+   LinkType List" under The PCAP registry group (Section 2.1).
 
    The registry has the following structure:
 
@@ -133,15 +123,15 @@ Table of Contents
 
    *  Description: Provides a very short description.
 
-   *  Reference: Indicates an authoritative the document reference for
-      the LinkType or a requester reference.
+   *  Reference: Indicates an authoritative document reference for the
+      LinkType or a requester reference.
 
    The LinkType value is a 16-bit number.  The policy allocation for the
    LinkType values is as follows:
 
    *  Values from 32768 to 65000 must be allocated via Specification
       Required (Section 4.6 of [RFC8126]).  Guidance for Designated
-      Experts is provided in Section 3.2.2.
+      Experts is provided in Section 2.2.2.
 
    *  Values from 0 to 32767 are allocated following a First-Come First-
       Served policy (Section 4.4 of [RFC8126]).  Note that this category
@@ -151,16 +141,16 @@ Table of Contents
    *  Values from 65001 to 65535 are reserved for Private Use
       (Section 4.1 of [RFC8126]).
 
-   The initial version of the registry is provided in Section 3.2.1.  In
-   each case here, the reference should be to [TCPDUMP] and the RFC
+   The initial version of the registry is provided in Section 2.2.1.  In
+   each case here, the reference should be set to [TCPDUMP] and the RFC
    number to be assigned to this document, which is not repeated each
    time.
 
-   The initial values table is based upon the Link type list maintained
-   by libpcap, and published on [TCPDUMP].
+   The initial contents of the table are based upon the Link type list
+   maintained by libpcap, and published on [TCPDUMP].
 
    Note that historically, values were assigned incrementally following
-   First Come First Served policy, with a preference for a public
+   First Come First Served (FCFS) policy, with a preference for a public
    specification, but with no mandate.  Some historical values may have
    less specification than desired.
 
@@ -169,15 +159,16 @@ Table of Contents
    values in the 65001-65535 range.
 
    In general, Private Use values should never leak out of the entity
-   that uses it.  As the First Come First Served range is large and
-   easily obtained, official values are recommended.
+   that uses it.  As the FCFS range is large and easily obtained,
+   official values are recommended.
 
-      There is often an associated DLT value which is often identical in
-      value, but not universally so.  DLT values are associated with
-      specific operation system captures, and are operating system
-      specific, and are thus not subject to standardization.
+      There is often an associated Data Link Type (DLT) value which is
+      often identical in value, but not universally so.  DLT values are
+      associated with specific operation system captures, and are
+      operating system specific, and are thus not subject to
+      standardization.
 
-3.2.1.  Initial Values
+2.2.1.  Initial Values
 
    This is the initial table for the registry:
 
@@ -193,10 +184,11 @@ Table of Contents
    Name  LINKTYPE_EXP_ETHERNET
    Number  2
    Description  Xerox experimental 3Mb Ethernet
+   Reference  [PracConsEthDesign]
 
    Name  LINKTYPE_AX25
    Number  3
-   Description  AX.25 packet
+   Description  AX.25 layer 2 packets
    Reference  [AX.25]
 
    Name  LINKTYPE_PRONET
@@ -215,6 +207,7 @@ Table of Contents
    Name  LINKTYPE_ARCNET_BSD
    Number  7
    Description  Reserved for ARCNET Data Packets with BSD encapsulation
+   Reference  [ATA-878.1-1999][Draft-ATA-878.2][RFC1051][RFC1201]
 
    Name  LINKTYPE_SLIP
    Number  8
@@ -380,6 +373,7 @@ Table of Contents
    Number  129
    Description  Reserved for ARCNET Data Packets with Linux
       encapsulation
+   Reference  [ATA-878.1-1999][Draft-ATA-878.2][RFC1051][RFC1201]
 
    Name  LINKTYPE_JUNIPER_MLPPP
    Number  130
@@ -649,10 +643,10 @@ Table of Contents
       octets of that header are present.  All fields in the header are
       in host byte order.  When performing a live capture, the host byte
       order is the byte order of the machine on which the packets are
-      captured.  When reading a pcap file, the byte order is the byte
+      captured.  When reading a PCAP file, the byte order is the byte
       order for the file, as specified by the file's magic number; when
-      reading a pcapng file, the byte order is the byte order for the
-      section of the pcapng file, as specified by the Section Header
+      reading a PCAPNG file, the byte order is the byte order for the
+      section of the PCAPNG file, as specified by the Section Header
       Block
 
    Name  LINKTYPE_CAN20B
@@ -831,10 +825,10 @@ Table of Contents
       header are present.  All fields in the header are in host byte
       order.  When performing a live capture, the host byte order is the
       byte order of the machine on which the packets are captured.  When
-      reading a pcap file, the byte order is the byte order for the
+      reading a PCAP file, the byte order is the byte order for the
       file, as specified by the file's magic number; when reading a
-      pcapng file, the byte order is the byte order for the section of
-      the pcapng file, as specified by the Section Header Block.  For
+      PCAPNG file, the byte order is the byte order for the section of
+      the PCAPNG file, as specified by the Section Header Block.  For
       isochronous transfers, the ndesc field specifies the number of
       isochronous descriptors that follow
 
@@ -1284,17 +1278,16 @@ Table of Contents
       value 0x0000 (reserved address) is used to detect broadcast
       transmissions
 
-3.2.2.  Guidance for Designated Experts
+2.2.2.  Guidance for Designated Experts
 
    When processing a request for a Specification Required allocation the
    Designated Experts are expected to be able to find the relevant
    specification at a clearly stable URL.  It is noted that many
    enterprise web sites do not maintain URLs over a long period of time,
    and a documented in a "wp-uploaded" section is highly likely to
-   disappear.  In addition Specifications that require a reader to click
+   disappear.  In addition specifications that require a reader to click
    through any kind of marketing or legal agreement are not considered
-   public.  (This is the opinion of other corporate lawyers, who worry
-   about what their employees might have agreed to)
+   public.
 
    The specification needs to be clearly written, and when the contents
    of the link type can contain an IPv4 or IPv6 header, then the octets
@@ -1303,25 +1296,25 @@ Table of Contents
 
    Specifications that are not publicly available, but which may be
    obtained via liaison agreements (such as to ITU-T, 3GPP, IEEE, etc.)
-   are acceptable particularly if the document will be public
-   eventually, but are discouraged.  For other documents, the Designated
-   Expert will need use their judgement, or consult the WG or an Area
-   Director.
+   are acceptable particularly if the specification document will be
+   public eventually, but are discouraged.  For other documents, the
+   Designated Expert will need use their judgement, or consult the
+   OPSAWG or an Area Director.
 
    Linktypes may be allocated for specifications not publicly available
-   may be made within the First-Come/First-Served area.  This includes
-   specifications that might be classified.  The minimal requirement is
-   for a contact person for that link type.
+   may be made within the FCFS range.  This includes specifications that
+   might be classified.  The minimal requirement is to provide a contact
+   person for that link type.
 
-4.  Security Considerations
+3.  Security Considerations
 
    This document describes the IANA registration rules for the LINKTYPE
-   encapsulations.  PCAP, and PCAPNG packet file formats use this value
-   to determine what kind of headers precede network packet captures.
-   Many of these formats can contain IPv4 and IPv6 packets.  A system
-   reading PCAP or PCAPNG format captures can be subject to arbitrary
-   inputs that may be controlled by malicious entities, so utmost
-   caution is required.
+   encapsulations.  PCAP-related packet file formats use this value to
+   determine what kind of headers precede network packet captures.  Many
+   of these formats can contain IPv4 and IPv6 packets.  A system reading
+   PCAP-related format captures can be subject to arbitrary inputs that
+   may be controlled by malicious entities, so utmost caution is
+   required.
 
    Many LINKTYPE formats include a "snapshot" length, which may be
    smaller than the actual packet.  It is therefore very likely that
@@ -1331,7 +1324,7 @@ Table of Contents
    interpreting the packets need to carefully scrutinize all attempts to
    read data from a capture.
 
-5.  Contributors
+4.  Contributors
 
    PCAP has been developed over three and half decades by a variety of
    developers, including: Bill Fenner, Denis Ovsienko, Francois-Xavier
@@ -1342,31 +1335,22 @@ Table of Contents
    PCAP was originally created at LBL by Steve McCanne, Craig Leres, and
    Van Jacobson.
 
-6.  Acknowledgments
+5.  Acknowledgments
 
    The authors wish to thank: Michael Tuexen, Mohamed Boucadair, Carsten
    Bormann, Henk Birkholtz, and Robert Wilton their invaluable comments
    and encouragement.
 
-7.  References
+6.  References
 
-7.1.  Normative References
-
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
-
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+6.1.  Normative References
 
    [RFC8126]  Cotton, M., Leiba, B., and T. Narten, "Guidelines for
               Writing an IANA Considerations Section in RFCs", BCP 26,
               RFC 8126, DOI 10.17487/RFC8126, June 2017,
               <https://www.rfc-editor.org/rfc/rfc8126>.
 
-7.2.  Informative References
+6.2.  Informative References
 
    [TCPDUMP]  "LINK-LAYER HEADER TYPES", n.d.,
               <https://www.tcpdump.org/linktypes.html>.
@@ -1393,6 +1377,12 @@ Table of Contents
               Automation and Control Networks", ANSI/ASHRAE Standard
               135, n.d..
 
+   [ATA-878.1-1999]
+              "ATA 878.1 - 1999 Local Area Network - Token Bus", ARCNET
+              Trade Association standard 878.1-1999, 1999,
+              <https://web.archive.org/web/20100414154838/
+              http://www.arcnet.com/resources/ata8781.pdf>.
+
    [AVS]      Peachy, S., "Archived AVS specification", n.d.,
               <http://web.archive.org/web/20040803232023/
               http://www.shaftnet.org/~pizza/software/capturefrm.txt>.
@@ -1416,6 +1406,12 @@ Table of Contents
               "Excentis XRA Header", n.d.,
               <https://support.excentis.com/index.php?/Knowledgebase/
               Article/View/159>.
+
+   [Draft-ATA-878.2]
+              "Draft ATA 878.2 ARCNET Packet Fragmentation Standard
+              Version 1.4", ARCNET Trade Association draft standard
+              878.2, 1992, <https://web.archive.org/web/20100414154914/
+              http://www.arcnet.com/resources/ata8782.pdf>.
 
    [DVB-CI]   "Common Interface Specification for Conditional Access and
               other Digital Video Broadcasting Decoder Applications",
@@ -1681,6 +1677,12 @@ Table of Contents
               <https://github.com/matwey/libopenvizsla/wiki/OpenVizsla-
               protocol-description>.
 
+   [PracConsEthDesign]
+              Crane, R. C. and E. A. Taft, "Practical Considerations in
+              Ethernet Local Network Design", February 1980,
+              <http://bitsavers.org/pdf/xerox/ethernet_3mb/Practical_Con
+              siderations_in_Ethernet_Local_Network_Design_Feb1980.pdf>.
+
    [PPI]      "Per-Packet Information Header Specification", May 2007,
               <https://web.archive.org/web/20160328114748/
               http://www.cacetech.com/documents/
@@ -1713,9 +1715,6 @@ Table of Contents
               connection control part procedures", ITU-T Recommendation
               Q.714, n.d., <https://www.itu.int/rec/T-REC-Q.714/en/>.
 
-   [Radiotap] radiotap.org, "Radiotap Web site", n.d.,
-              <http://www.radiotap.org/>.
-
    [Q.920]    "Digital Subscriber Signalling System No. 1 (DSS1) - ISDN
               User-Network Interface Data Link Layer - General aspects",
               ITU-T Recommendation Q.920, n.d.,
@@ -1724,6 +1723,9 @@ Table of Contents
    [Q.921]    "ISDN user-network interface - Data Link Layer
               specification", ITU-T Recommendation Q.921, n.d.,
               <https://www.itu.int/rec/T-REC-Q.921/en/>.
+
+   [Radiotap] radiotap.org, "Radiotap Web site", n.d.,
+              <http://www.radiotap.org/>.
 
    [STANAG-5066]
               "Profile for Maritime High Frequency (HF) Radio Data
@@ -1739,6 +1741,29 @@ Table of Contents
               "Z-Wave Serial API Host Application Programming Guide",
               n.d., <https://www.silabs.com/documents/public/user-
               guides/INS12350-Serial-API-Host-Appl.-Prg.-Guide.pdf>.
+
+   [I-D.ietf-opsawg-pcap]
+              Harris, G. and M. Richardson, "PCAP Capture File Format",
+              Work in Progress, Internet-Draft, draft-ietf-opsawg-pcap-
+              04, 4 August 2024, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-opsawg-pcap-04>.
+
+   [I-D.ietf-opsawg-pcapng]
+              Tüxen, M., Risso, F., Bongertz, J., Combs, G., Harris, G.,
+              Chaudron, E., and M. Richardson, "PCAP Next Generation
+              (pcapng) Capture File Format", Work in Progress, Internet-
+              Draft, draft-ietf-opsawg-pcapng-02, 4 August 2024,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-opsawg-
+              pcapng-02>.
+
+   [RFC1051]  Prindeville, P., "Standard for the transmission of IP
+              datagrams and ARP packets over ARCNET networks", RFC 1051,
+              DOI 10.17487/RFC1051, March 1988,
+              <https://www.rfc-editor.org/rfc/rfc1051>.
+
+   [RFC1201]  Provan, D., "Transmitting IP traffic over ARCNET
+              networks", STD 46, RFC 1201, DOI 10.17487/RFC1201,
+              February 1991, <https://www.rfc-editor.org/rfc/rfc1201>.
 
    [RFC1661]  Simpson, W., Ed., "The Point-to-Point Protocol (PPP)",
               STD 51, RFC 1661, DOI 10.17487/RFC1661, July 1994,
