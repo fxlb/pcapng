@@ -2305,7 +2305,7 @@ the original hardware/os/application info?]<a href="#section-4.1-18" class="pilc
 information describing an interface on which packet data is
 captured.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">Tools that write / read the capture file associate an incrementing
-unsigned 32-bit number (starting from '0') to each Interface
+32-bit unsigned integer (starting from '0') to each Interface
 Definition Block, called the Interface ID for the interface in
 question. This number is unique within each Section and
 identifies the interface to which the IDB refers; it is only
@@ -2756,7 +2756,7 @@ format of an Enhanced Packet Block is shown in <a href="#format_epb" class="auto
 obsolete, <span><a href="#appendix_pb" class="internal xref">Packet Block</a> (<a href="#appendix_pb" class="auto internal xref">Appendix A</a>)</span>:<a href="#section-4.3-2" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-4.3-3.1">
-            <p id="section-4.3-3.1.1">it stores the Interface Identifier as a 32-bit integer value.
+            <p id="section-4.3-3.1.1">it stores the Interface Identifier as a 32-bit unsigned integer.
 This is a requirement when a capture stores packets coming from a
 large number of interfaces;<a href="#section-4.3-3.1.1" class="pilcrow">¶</a></p>
 </li>
@@ -3067,7 +3067,7 @@ thread.<a href="#section-4.3-22" class="pilcrow">¶</a></p>
           </h4>
 <p id="section-4.3.1-1">The Enhanced Packet Block Flags Word is a 32-bit value that
 contains link-layer information about the packet.<a href="#section-4.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.3.1-2">The word is encoded as an unsigned 32-bit integer, using the
+<p id="section-4.3.1-2">The word is encoded as a 32-bit unsigned integer, using the
 endianness of the Section Header Block scope it is in. In the
 following table, the bits are numbered with 0 being the
 least-significant bit and 31 being the most-significant bit of
@@ -3625,7 +3625,7 @@ the following options are valid within this block:<a href="#section-4.6-6" class
           <dd style="margin-left: 4.0em" id="section-4.6-8.2">
             <p id="section-4.6-8.2.1">The isb_starttime
 option specifies the time that traffic capture started on this
-interface, consisting of two unsigned 32-bit values, in the same
+interface, consisting of two 32-bit unsigned integers, in the same
 format as defined for timestamps in the Enhanced Packet Block
 (<a href="#section_epb" class="auto internal xref">Section 4.3</a>), using the 'if_tsresol' and 'if_tsoffset' values
 from the Interface Description Block specified by the Interface ID.<a href="#section-4.6-8.2.1" class="pilcrow">¶</a></p>
@@ -3639,7 +3639,7 @@ to 2012-06-29 06:17:00.834163 UTC.<a href="#section-4.6-9" class="pilcrow">¶</a
           <dd style="margin-left: 4.0em" id="section-4.6-10.2">
             <p id="section-4.6-10.2.1">The isb_endtime
 option specifies the time that traffic capture ended on this
-interface, consisting of two unsigned 32-bit values, in the same
+interface, consisting of two 32-bit unsigned integers, in the same
 format as defined for timestamps in the Enhanced Packet Block
 (<a href="#section_epb" class="auto internal xref">Section 4.3</a>), using the 'if_tsresol' and 'if_tsoffset' values
 from the Interface Description Block specified by the Interface ID.<a href="#section-4.6-10.2.1" class="pilcrow">¶</a></p>
@@ -4295,7 +4295,7 @@ for each should be (see RFC 5226)]<a href="#section-10-2" class="pilcrow">¶</a>
         <h3 id="name-standardized-block-type-cod">
 <a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-standardized-block-type-cod" class="section-name selfRef">Standardized Block Type Codes</a>
         </h3>
-<p id="section-10.1-1">Every Block is uniquely identified by a 32-bit integer value, stored
+<p id="section-10.1-1">Every Block is uniquely identified by a 32-bit unsigned integer, stored
 in the Block Header.<a href="#section-10.1-1" class="pilcrow">¶</a></p>
 <p id="section-10.1-2">As pointed out in <a href="#section_block" class="auto internal xref">Section 3.1</a>, Block Type
 codes whose Most Significant Bit (bit 31) is set to 1 are reserved for
