@@ -1373,8 +1373,8 @@ Table of Contents
 
 4.3.1.  Enhanced Packet Block Flags Word
 
-   The Enhanced Packet Block Flags Word is a 32-bit value that contains
-   link-layer information about the packet.
+   The Enhanced Packet Block Flags Word contains link-layer information
+   about the packet.
 
    The word is encoded as a 32-bit unsigned integer, using the
    endianness of the Section Header Block scope it is in.  In the
