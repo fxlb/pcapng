@@ -796,7 +796,7 @@ PCAP was originally created at LBL by Steve McCanne, Craig Leres, and Van Jacobs
 
 #  Acknowledgments
 
-The authors wish to thank: Michael Tuexen, Mohamed Boucadair, Carsten Bormann, Henk Birkholtz, and Robert Wilton their invaluable comments and encouragement.
+The authors wish to thank: Michael Tuexen, Mohamed Boucadair, Carsten Bormann, Henk Birkholtz, and Robert Wilton for their invaluable comments and encouragement.
 
 <!--
 COMMENTS.
